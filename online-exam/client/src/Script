@@ -1,0 +1,4 @@
+mkdir -p /home/claude/oep-client/src/{components/{common,exam,proctoring,dashboard},pages/{auth,student,instructor,proctor,admin},context,hooks,services,utils,routes} && mkdir -p /home/claude/oep-client/public
+Output
+
+exit code 0
