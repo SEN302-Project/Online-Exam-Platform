@@ -22,3 +22,8 @@ export const updateExamById = async (id, updateData) => {
     const result = await getExams().updateOne({_id: new ObjectId(id)}, {$set: updateData})
     return result
 }
+
+export const deleteExamById = async(id) => {
+    const result = await getExams().deleteOne({_id: new ObjectId(id)})
+    return result
+}

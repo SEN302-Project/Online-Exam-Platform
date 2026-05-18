@@ -4,6 +4,7 @@ import {config} from 'dotenv'
 import cors from 'cors'
 import authRouter from './routes/authRoutes.js'
 import examRouter from './routes/examRoutes.js'
+import questionRouter from './routes/questionRoutes.js'
 
 config()
 const app = express();
@@ -11,7 +12,8 @@ const app = express();
 app.use(cors())
 app.use(express.json())
 app.use('/api/auth', authRouter)
-app.use('api', examRouter)
+app.use('/api', examRouter)
+app.use('/api', questionRouter)
 
 const startServer = async () => {
     try{

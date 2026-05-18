@@ -1,6 +1,6 @@
 import {
     createExam as createExamInDB, findExamById,
-    findAllExams, updateExamById
+    findAllExams, updateExamById, deleteExamById
 } from '../models/examModel.js'
 import { findSubmissionByExamAndStudent,
     findSubmissionById, getSubmissions,
@@ -85,16 +85,26 @@ export const submitExam = async (req,res) => {
     try{
         const {id} = req.params
         const studentId = req.user.userID
-        const answers = req.body
+        const {answers} = req.body
         const submissionData = await findSubmissionByExamAndStudent(id, studentId)
         const submissionUpdate = {
             answers: answers,
             status: "submitted",
             submittedAt: new Date()
         }
+        
         if(!submissionData) {
             return res.status(404).json({message: 'Submission not found'})
-        } else if (submissionData.status === "submitted"){
+        } 
+
+        const findExam = await findExamById(id)
+        if(!findExam) {
+            return res.status(404),json({message: 'Exam not found'})
+        }else
+        if (findExam.status === 'closed') {
+            return res.status(403).json({message: 'Exam is closed'})
+        }
+        else if (submissionData.status === "submitted"){
             return res.status(400).json({message: 'Exam already submitted'})
         }
 
@@ -109,17 +119,28 @@ export const submitExam = async (req,res) => {
 export const autoSave = async (req,res) => {
    try{ const {id} = req.params
     const studentId = req.user.userID
-    const answers = req.body
+    const {answers} = req.body
     const submissionData = await findSubmissionByExamAndStudent(id, studentId)
     if(submissionData){
-        const result =  await updateSubmissioninDB(submissionData._id, {answers})
+        const result =  await updateSubmissionInDB(submissionData._id, {answers})
         return res.status(200).json({message: "Progress saved"})
     }
     else{
         return res.status(404).json({message: "Submission not found"})
     }}
     catch(err){
+        console.log(err)
          return res.status(500).json({message: "Internal Server Error"})
+    }
+}
+
+export const deleteExam = async(req, res) => {
+    try{
+        const {id} = req.params
+        const result = await deleteExamById(id)
+        return res.status(200).json({message:'Exam successfully deleted'})
+    } catch (err) {
+        return res.status(500).json({message: 'Internal Server Error'})
     }
 }
 
