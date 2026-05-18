@@ -13,6 +13,8 @@ examRouter.post('/exams',authMiddleware, createExam)
 examRouter.put('/exams/:id',authMiddleware, updateExam)
 examRouter.post('/exams/:id/start', authMiddleware, startExam)
 examRouter.post('/exams/:id/submit',authMiddleware, submitExam)
-examRouter.post('/exams/:id', authMiddleware, autoSave)
+examRouter.post('/exams/:id/autosave', authMiddleware, autoSave)
+
+export default examRouter
 
 
