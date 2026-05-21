@@ -8,6 +8,9 @@ import { findSubmissionByExamAndStudent,
     updateSubmission as updateSubmissionInDB
  } from '../models/submissionModel.js'
 
+import autoGrade from '../utils/autoGrade.js'
+import { createResults } from '../models/resultModel.js'
+
 export const getAllExams =  async (req,res) => {
     try{
         const result = await findAllExams()
@@ -99,7 +102,7 @@ export const submitExam = async (req,res) => {
 
         const findExam = await findExamById(id)
         if(!findExam) {
-            return res.status(404),json({message: 'Exam not found'})
+            return res.status(404).json({message: 'Exam not found'})
         }else
         if (findExam.status === 'closed') {
             return res.status(403).json({message: 'Exam is closed'})
@@ -109,6 +112,8 @@ export const submitExam = async (req,res) => {
         }
 
         const updateSubmission = await updateSubmissionInDB(submissionData._id, submissionUpdate)
+        const gradedResult = await autoGrade(findExam, submissionData)
+        await createResults(gradedResult)
         return res.status(200).json({message:'Exam submitted successfully'})
 
     }catch(err) {

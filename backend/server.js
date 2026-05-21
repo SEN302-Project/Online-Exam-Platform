@@ -5,6 +5,7 @@ import cors from 'cors'
 import authRouter from './routes/authRoutes.js'
 import examRouter from './routes/examRoutes.js'
 import questionRouter from './routes/questionRoutes.js'
+import resultRouter from './routes/resultRoutes.js'
 
 config()
 const app = express();
@@ -14,6 +15,7 @@ app.use(express.json())
 app.use('/api/auth', authRouter)
 app.use('/api', examRouter)
 app.use('/api', questionRouter)
+app.use('/api', resultRouter)
 
 const startServer = async () => {
     try{
