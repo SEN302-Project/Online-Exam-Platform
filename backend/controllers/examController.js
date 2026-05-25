@@ -112,11 +112,12 @@ export const submitExam = async (req,res) => {
         }
 
         const updateSubmission = await updateSubmissionInDB(submissionData._id, submissionUpdate)
-        const gradedResult = await autoGrade(findExam, submissionData)
+        const gradedResult = await autoGrade(findExam, {...submissionData, answers})
         await createResults(gradedResult)
         return res.status(200).json({message:'Exam submitted successfully'})
 
     }catch(err) {
+        console.log(err)
         return res.status(500).json({message:'Internal Server Error' })
     }
 }
@@ -134,7 +135,6 @@ export const autoSave = async (req,res) => {
         return res.status(404).json({message: "Submission not found"})
     }}
     catch(err){
-        console.log(err)
          return res.status(500).json({message: "Internal Server Error"})
     }
 }
