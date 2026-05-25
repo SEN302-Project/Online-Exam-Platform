@@ -1,3 +1,4 @@
+import { useNavigate } from "react-router-dom";
 import { Eye, AlertTriangle, Users } from "lucide-react";
 import Navbar from "../../components/common/Navbar";
 
@@ -9,6 +10,7 @@ const mockSessions = [
 ];
 
 export default function ProctorConsole() {
+  const navigate = useNavigate();
   return (
     <div className="min-h-screen bg-ink-50">
       <Navbar />
@@ -77,7 +79,12 @@ export default function ProctorConsole() {
                   <div className="text-xs text-ink-500">{a.student}</div>
                 </div>
                 <div className="text-xs text-ink-400">{a.time}</div>
-                <button className="btn-ghost !text-sm !px-3 !py-1.5">Review</button>
+                <button
+                  onClick={() => navigate(`/proctor/incident/alert-${i}`)}
+                  className="btn-ghost !text-sm !px-3 !py-1.5"
+                >
+                  Review
+                </button>
               </div>
             ))}
           </div>

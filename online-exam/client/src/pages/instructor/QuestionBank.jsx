@@ -1,5 +1,6 @@
 import { useState } from "react";
-import { Plus, Search, Upload, Tag } from "lucide-react";
+import { useNavigate } from "react-router-dom";
+import { Plus, Search, Upload, Tag, ArrowLeft } from "lucide-react";
 import Navbar from "../../components/common/Navbar";
 
 const mockQuestions = [
@@ -24,6 +25,7 @@ const DIFF_COLORS = {
 };
 
 export default function QuestionBank() {
+  const navigate = useNavigate();
   const [search, setSearch] = useState("");
 
   const filtered = mockQuestions.filter((q) =>
@@ -34,6 +36,12 @@ export default function QuestionBank() {
     <div className="min-h-screen bg-ink-50">
       <Navbar />
       <main className="mx-auto max-w-6xl px-6 py-10">
+        <button
+          onClick={() => navigate("/instructor")}
+          className="inline-flex items-center gap-1.5 text-sm text-ink-500 hover:text-ink-900 mb-6"
+        >
+          <ArrowLeft size={15} /> Back to dashboard
+        </button>
         <div className="flex items-start justify-between mb-8 gap-4 flex-wrap">
           <div>
             <h1 className="font-display text-3xl font-semibold text-ink-900">Question Bank</h1>

@@ -25,7 +25,7 @@ export default function AdminPanel() {
               <HealthRow label="API Gateway" status="healthy" />
               <HealthRow label="Database (PostgreSQL)" status="healthy" />
               <HealthRow label="Database (MongoDB)" status="healthy" />
-              <HealthRow label="AI Proctoring Service" status="degraded" />
+              <HealthRow label="AI Proctoring Service" status="healthy" />
               <HealthRow label="File Storage (S3)" status="healthy" />
             </div>
           </section>

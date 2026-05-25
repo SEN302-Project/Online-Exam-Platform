@@ -2,16 +2,26 @@ import { Routes, Route, Navigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import { ROLES, ROLE_HOMES, hasRole } from "../utils/roleGuard";
 
-// Auth pages
+// Auth
 import Login from "../pages/auth/Login";
 import Register from "../pages/auth/Register";
 import VerifyEmail from "../pages/auth/VerifyEmail";
+
+// Shared
+import Profile from "../pages/Profile";
 
 // Student
 import StudentDashboard from "../pages/student/StudentDashboard";
 import ExamRoom from "../pages/student/ExamRoom";
 import Results from "../pages/student/Results";
 import ExamHistory from "../pages/student/ExamHistory";
+import UpcomingExams from "../pages/student/UpcomingExams";
+import IdentityVerification from "../pages/student/IdentityVerification";
+import SystemCheck from "../pages/student/SystemCheck";
+import LiveExam from "../pages/student/LiveExam";
+import HonorPolicy from "../pages/student/HonorPolicy";
+import HelpCenter from "../pages/student/HelpCenter";
+import PracticeMode from "../pages/student/PracticeMode";
 
 // Instructor
 import InstructorDashboard from "../pages/instructor/InstructorDashboard";
@@ -19,6 +29,8 @@ import CreateExam from "../pages/instructor/CreateExam";
 import QuestionBank from "../pages/instructor/QuestionBank";
 import GradingInterface from "../pages/instructor/GradingInterface";
 import PlagiarismReport from "../pages/instructor/PlagiarismReport";
+import Analytics from "../pages/instructor/Analytics";
+import InstructorHelp from "../pages/instructor/InstructorHelp";
 
 // Proctor
 import ProctorConsole from "../pages/proctor/ProctorConsole";
@@ -37,6 +49,13 @@ function ProtectedRoute({ children, allowedRoles }) {
   return children;
 }
 
+function AuthOnly({ children }) {
+  const { user, loading } = useAuth();
+  if (loading) return null;
+  if (!user) return <Navigate to="/login" replace />;
+  return children;
+}
+
 function HomeRedirect() {
   const { user, loading } = useAuth();
   if (loading) return null;
@@ -47,132 +66,43 @@ function HomeRedirect() {
 export default function AppRoutes() {
   return (
     <Routes>
-      {/* Public */}
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
       <Route path="/verify-email" element={<VerifyEmail />} />
 
+      <Route path="/profile" element={<AuthOnly><Profile /></AuthOnly>} />
+
       {/* Student */}
-      <Route
-        path="/student"
-        element={
-          <ProtectedRoute allowedRoles={[ROLES.STUDENT]}>
-            <StudentDashboard />
-          </ProtectedRoute>
-        }
-      />
-      <Route
-        path="/student/exam/:examId"
-        element={
-          <ProtectedRoute allowedRoles={[ROLES.STUDENT]}>
-            <ExamRoom />
-          </ProtectedRoute>
-        }
-      />
-      <Route
-        path="/student/results/:resultId"
-        element={
-          <ProtectedRoute allowedRoles={[ROLES.STUDENT]}>
-            <Results />
-          </ProtectedRoute>
-        }
-      />
-      <Route
-        path="/student/history"
-        element={
-          <ProtectedRoute allowedRoles={[ROLES.STUDENT]}>
-            <ExamHistory />
-          </ProtectedRoute>
-        }
-      />
+      <Route path="/student" element={<ProtectedRoute allowedRoles={[ROLES.STUDENT]}><StudentDashboard /></ProtectedRoute>} />
+      <Route path="/student/upcoming" element={<ProtectedRoute allowedRoles={[ROLES.STUDENT]}><UpcomingExams /></ProtectedRoute>} />
+      <Route path="/student/practice" element={<ProtectedRoute allowedRoles={[ROLES.STUDENT]}><PracticeMode /></ProtectedRoute>} />
+      <Route path="/student/identity" element={<ProtectedRoute allowedRoles={[ROLES.STUDENT]}><IdentityVerification /></ProtectedRoute>} />
+      <Route path="/student/system-check" element={<ProtectedRoute allowedRoles={[ROLES.STUDENT]}><SystemCheck /></ProtectedRoute>} />
+      <Route path="/student/live" element={<ProtectedRoute allowedRoles={[ROLES.STUDENT]}><LiveExam /></ProtectedRoute>} />
+      <Route path="/student/honor-policy" element={<ProtectedRoute allowedRoles={[ROLES.STUDENT]}><HonorPolicy /></ProtectedRoute>} />
+      <Route path="/student/help" element={<ProtectedRoute allowedRoles={[ROLES.STUDENT]}><HelpCenter /></ProtectedRoute>} />
+      <Route path="/student/exam/:examId" element={<ProtectedRoute allowedRoles={[ROLES.STUDENT]}><ExamRoom /></ProtectedRoute>} />
+      <Route path="/student/results/:resultId" element={<ProtectedRoute allowedRoles={[ROLES.STUDENT]}><Results /></ProtectedRoute>} />
+      <Route path="/student/history" element={<ProtectedRoute allowedRoles={[ROLES.STUDENT]}><ExamHistory /></ProtectedRoute>} />
 
       {/* Instructor */}
-      <Route
-        path="/instructor"
-        element={
-          <ProtectedRoute allowedRoles={[ROLES.INSTRUCTOR]}>
-            <InstructorDashboard />
-          </ProtectedRoute>
-        }
-      />
-      <Route
-        path="/instructor/create-exam"
-        element={
-          <ProtectedRoute allowedRoles={[ROLES.INSTRUCTOR]}>
-            <CreateExam />
-          </ProtectedRoute>
-        }
-      />
-      <Route
-        path="/instructor/question-bank"
-        element={
-          <ProtectedRoute allowedRoles={[ROLES.INSTRUCTOR]}>
-            <QuestionBank />
-          </ProtectedRoute>
-        }
-      />
-      <Route
-        path="/instructor/grading/:examId"
-        element={
-          <ProtectedRoute allowedRoles={[ROLES.INSTRUCTOR]}>
-            <GradingInterface />
-          </ProtectedRoute>
-        }
-      />
-      <Route
-        path="/instructor/plagiarism/:examId"
-        element={
-          <ProtectedRoute allowedRoles={[ROLES.INSTRUCTOR]}>
-            <PlagiarismReport />
-          </ProtectedRoute>
-        }
-      />
+      <Route path="/instructor" element={<ProtectedRoute allowedRoles={[ROLES.INSTRUCTOR]}><InstructorDashboard /></ProtectedRoute>} />
+      <Route path="/instructor/create-exam" element={<ProtectedRoute allowedRoles={[ROLES.INSTRUCTOR]}><CreateExam /></ProtectedRoute>} />
+      <Route path="/instructor/question-bank" element={<ProtectedRoute allowedRoles={[ROLES.INSTRUCTOR]}><QuestionBank /></ProtectedRoute>} />
+      <Route path="/instructor/grading/:examId" element={<ProtectedRoute allowedRoles={[ROLES.INSTRUCTOR]}><GradingInterface /></ProtectedRoute>} />
+      <Route path="/instructor/plagiarism/:examId" element={<ProtectedRoute allowedRoles={[ROLES.INSTRUCTOR]}><PlagiarismReport /></ProtectedRoute>} />
+      <Route path="/instructor/analytics" element={<ProtectedRoute allowedRoles={[ROLES.INSTRUCTOR]}><Analytics /></ProtectedRoute>} />
+      <Route path="/instructor/help" element={<ProtectedRoute allowedRoles={[ROLES.INSTRUCTOR]}><InstructorHelp /></ProtectedRoute>} />
 
       {/* Proctor */}
-      <Route
-        path="/proctor"
-        element={
-          <ProtectedRoute allowedRoles={[ROLES.PROCTOR]}>
-            <ProctorConsole />
-          </ProtectedRoute>
-        }
-      />
-      <Route
-        path="/proctor/incident/:id"
-        element={
-          <ProtectedRoute allowedRoles={[ROLES.PROCTOR]}>
-            <IncidentReview />
-          </ProtectedRoute>
-        }
-      />
+      <Route path="/proctor" element={<ProtectedRoute allowedRoles={[ROLES.PROCTOR]}><ProctorConsole /></ProtectedRoute>} />
+      <Route path="/proctor/incident/:id" element={<ProtectedRoute allowedRoles={[ROLES.PROCTOR]}><IncidentReview /></ProtectedRoute>} />
 
       {/* Admin */}
-      <Route
-        path="/admin"
-        element={
-          <ProtectedRoute allowedRoles={[ROLES.SYSTEM_ADMIN, ROLES.INSTITUTION_ADMIN]}>
-            <AdminPanel />
-          </ProtectedRoute>
-        }
-      />
-      <Route
-        path="/admin/users"
-        element={
-          <ProtectedRoute allowedRoles={[ROLES.SYSTEM_ADMIN, ROLES.INSTITUTION_ADMIN]}>
-            <UserManagement />
-          </ProtectedRoute>
-        }
-      />
-      <Route
-        path="/admin/audit-logs"
-        element={
-          <ProtectedRoute allowedRoles={[ROLES.SYSTEM_ADMIN]}>
-            <AuditLogs />
-          </ProtectedRoute>
-        }
-      />
+      <Route path="/admin" element={<ProtectedRoute allowedRoles={[ROLES.SYSTEM_ADMIN, ROLES.INSTITUTION_ADMIN]}><AdminPanel /></ProtectedRoute>} />
+      <Route path="/admin/users" element={<ProtectedRoute allowedRoles={[ROLES.SYSTEM_ADMIN, ROLES.INSTITUTION_ADMIN]}><UserManagement /></ProtectedRoute>} />
+      <Route path="/admin/audit-logs" element={<ProtectedRoute allowedRoles={[ROLES.SYSTEM_ADMIN]}><AuditLogs /></ProtectedRoute>} />
 
-      {/* Root + 404 */}
       <Route path="/" element={<HomeRedirect />} />
       <Route path="*" element={<HomeRedirect />} />
     </Routes>

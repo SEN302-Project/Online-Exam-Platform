@@ -1,5 +1,8 @@
-import { ArrowLeft, AlertTriangle, Bot, Eye, FileText } from "lucide-react";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { ArrowLeft, AlertTriangle, Bot, Eye, FileText, X } from "lucide-react";
 import Navbar from "../../components/common/Navbar";
+import Modal from "../../components/common/Modal";
 
 const mockReports = [
   { id: "1", student: "Student A", similarityScore: 87, aiScore: 92, source: "Cross-submission match (Student F)", severity: "high" },
@@ -14,13 +17,19 @@ const SEVERITY_STYLES = {
 };
 
 export default function PlagiarismReport() {
+  const navigate = useNavigate();
+  const [selectedReport, setSelectedReport] = useState(null);
+
   return (
     <div className="min-h-screen bg-ink-50">
       <Navbar />
 
       <main className="mx-auto max-w-5xl px-6 py-10">
-        <button className="inline-flex items-center gap-1.5 text-sm text-ink-500 hover:text-ink-900 mb-6">
-          <ArrowLeft size={15} /> Back to exam
+        <button
+          onClick={() => navigate("/instructor")}
+          className="inline-flex items-center gap-1.5 text-sm text-ink-500 hover:text-ink-900 mb-6"
+        >
+          <ArrowLeft size={15} /> Back to dashboard
         </button>
 
         <h1 className="font-display text-3xl font-semibold text-ink-900 mb-1">Plagiarism Report</h1>
@@ -46,7 +55,12 @@ export default function PlagiarismReport() {
                     </div>
                     <p className="text-sm text-ink-600">{r.source}</p>
                   </div>
-                  <button className="btn-secondary !text-sm">View Details</button>
+                  <button
+                    onClick={() => setSelectedReport(r)}
+                    className="btn-secondary !text-sm"
+                  >
+                    View Details
+                  </button>
                 </div>
 
                 <div className="grid grid-cols-2 gap-6">
@@ -58,6 +72,78 @@ export default function PlagiarismReport() {
           })}
         </div>
       </main>
+
+      {/* View Details Modal */}
+      <Modal
+        open={!!selectedReport}
+        onClose={() => setSelectedReport(null)}
+        title={`Plagiarism Details — ${selectedReport?.student || ""}`}
+        size="lg"
+        footer={
+          <>
+            <button className="btn-secondary" onClick={() => setSelectedReport(null)}>
+              Dismiss
+            </button>
+            <button className="btn-primary !bg-danger hover:!bg-red-700">
+              Flag for Review
+            </button>
+          </>
+        }
+      >
+        {selectedReport && (
+          <div className="space-y-5">
+            <div
+              className={`rounded-xl p-4 ${SEVERITY_STYLES[selectedReport.severity].badge}`}
+            >
+              <div className="font-semibold mb-1">
+                {SEVERITY_STYLES[selectedReport.severity].label}
+              </div>
+              <p className="text-sm">{selectedReport.source}</p>
+            </div>
+
+            <div className="grid grid-cols-2 gap-6">
+              <div>
+                <div className="text-xs uppercase tracking-wider text-ink-400 mb-2">
+                  Text Similarity Score
+                </div>
+                <div className="font-mono text-4xl font-bold text-ink-900">
+                  {selectedReport.similarityScore}
+                  <span className="text-lg text-ink-400">%</span>
+                </div>
+                <div className="text-xs text-ink-500 mt-1">
+                  Compared against 87 other submissions + web sources
+                </div>
+              </div>
+              <div>
+                <div className="text-xs uppercase tracking-wider text-ink-400 mb-2 flex items-center gap-1.5">
+                  <Bot size={13} /> AI-Generated Probability
+                </div>
+                <div className="font-mono text-4xl font-bold text-ink-900">
+                  {selectedReport.aiScore}
+                  <span className="text-lg text-ink-400">%</span>
+                </div>
+                <div className="text-xs text-ink-500 mt-1">
+                  Detected by language model classifier
+                </div>
+              </div>
+            </div>
+
+            <div className="rounded-xl border border-ink-100 p-4">
+              <div className="text-xs uppercase tracking-wider text-ink-400 mb-2">
+                Matched Excerpt
+              </div>
+              <p className="text-sm text-ink-700 leading-relaxed italic">
+                "The implementation uses a priority queue to maintain the frontier of nodes
+                ordered by f(n) = g(n) + h(n), where g(n) represents the actual cost from the
+                start node and h(n) is the heuristic estimate to the goal..."
+              </p>
+              <div className="mt-3 pt-3 border-t border-ink-100 text-xs text-ink-500">
+                Match found in: {selectedReport.source}
+              </div>
+            </div>
+          </div>
+        )}
+      </Modal>
     </div>
   );
 }

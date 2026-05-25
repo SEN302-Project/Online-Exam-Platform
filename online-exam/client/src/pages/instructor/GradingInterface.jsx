@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { ArrowLeft, Bot, Check, ChevronLeft, ChevronRight, EyeOff } from "lucide-react";
 import Navbar from "../../components/common/Navbar";
 
@@ -17,6 +18,7 @@ const mockSubmissions = [
 ];
 
 export default function GradingInterface() {
+  const navigate = useNavigate();
   const [current, setCurrent] = useState(0);
   const [score, setScore] = useState("");
   const [feedback, setFeedback] = useState("");
@@ -31,8 +33,11 @@ export default function GradingInterface() {
       <main className="mx-auto max-w-6xl px-6 py-8">
         <div className="flex items-center justify-between mb-6 gap-4">
           <div>
-            <button className="inline-flex items-center gap-1.5 text-sm text-ink-500 hover:text-ink-900 mb-2">
-              <ArrowLeft size={15} /> Back to exam
+            <button
+              onClick={() => navigate("/instructor")}
+              className="inline-flex items-center gap-1.5 text-sm text-ink-500 hover:text-ink-900 mb-2"
+            >
+              <ArrowLeft size={15} /> Back to dashboard
             </button>
             <h1 className="font-display text-2xl font-semibold text-ink-900">Grading Queue</h1>
           </div>

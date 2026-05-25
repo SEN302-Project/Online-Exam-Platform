@@ -1,12 +1,17 @@
+import { useNavigate } from "react-router-dom";
 import { ArrowLeft, AlertTriangle, Check, X } from "lucide-react";
 import Navbar from "../../components/common/Navbar";
 
 export default function IncidentReview() {
+  const navigate = useNavigate();
   return (
     <div className="min-h-screen bg-ink-50">
       <Navbar />
       <main className="mx-auto max-w-4xl px-6 py-10">
-        <button className="inline-flex items-center gap-1.5 text-sm text-ink-500 hover:text-ink-900 mb-6">
+        <button
+          onClick={() => navigate("/proctor")}
+          className="inline-flex items-center gap-1.5 text-sm text-ink-500 hover:text-ink-900 mb-6"
+        >
           <ArrowLeft size={15} /> Back to console
         </button>
 
