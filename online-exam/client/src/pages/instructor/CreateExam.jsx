@@ -40,7 +40,7 @@ export default function CreateExam() {
             <p className="mt-1 text-ink-500">Configure exam settings and add questions.</p>
           </div>
           <div className="flex gap-2">
-            <button className="btn-secondary">Save Draft</button>
+            <button onClick={() => navigate("/instructor/drafts")} className="btn-secondary">Save Draft</button>
             <button className="btn-primary">
               <Save size={15} /> Publish
             </button>

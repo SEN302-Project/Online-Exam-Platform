@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import {
   LayoutDashboard, Plus, BookOpen, ScrollText, FileText, Users, AlertTriangle, BarChart3, HelpCircle,
   ArrowRight, ChevronRight, TrendingUp, CheckCircle2, Clock,
+  FileEdit,
 } from "lucide-react";
 import Navbar from "../../components/common/Navbar";
 import Sidebar from "../../components/common/Sidebar";
@@ -16,6 +17,7 @@ const sidebarItems = [
     items: [
       { to: "/instructor", label: "Overview", icon: LayoutDashboard, end: true },
       { to: "/instructor/create-exam", label: "Create exam", icon: Plus },
+      { to: "/instructor/drafts", label: "Drafts", icon: FileEdit, badge: "3" },
       { to: "/instructor/question-bank", label: "Question bank", icon: BookOpen },
       { to: "/instructor/grading/1", label: "Grading queue", icon: ScrollText, badge: "12" },
     ],

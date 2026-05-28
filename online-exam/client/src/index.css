@@ -15,11 +15,26 @@
     @apply bg-ink-950 text-ink-100;
   }
 
-  /* Dark mode color swaps for tailwind utility classes used throughout */
+  /* ==== Backgrounds ==== */
   .dark .bg-white { background-color: #1c2230 !important; }
+  .dark .bg-white\/80 { background-color: rgba(28, 34, 48, 0.85) !important; }
+  .dark .bg-white\/60 { background-color: rgba(28, 34, 48, 0.7) !important; }
+  .dark .bg-white\/20 { background-color: rgba(255, 255, 255, 0.1) !important; }
+  .dark .bg-white\/15 { background-color: rgba(255, 255, 255, 0.08) !important; }
+  .dark .bg-white\/10 { background-color: rgba(255, 255, 255, 0.06) !important; }
+  .dark .bg-white\/5 { background-color: rgba(255, 255, 255, 0.04) !important; }
   .dark .bg-ink-50 { background-color: #0f131c !important; }
   .dark .bg-ink-100 { background-color: #1c2230 !important; }
+  .dark .bg-ink-50\/30 { background-color: rgba(37, 99, 235, 0.08) !important; }
+  .dark .bg-ink-50\/60 { background-color: rgba(15, 19, 28, 0.6) !important; }
+  .dark .bg-accent-50 { background-color: rgba(37, 99, 235, 0.12) !important; }
+  .dark .bg-accent-100 { background-color: rgba(37, 99, 235, 0.2) !important; }
 
+  /* Gradient swap: any "from-accent-50 to-white" should become a dark gradient */
+  .dark .from-accent-50 { --tw-gradient-from: rgba(37, 99, 235, 0.15) var(--tw-gradient-from-position) !important; --tw-gradient-to: rgba(37, 99, 235, 0) var(--tw-gradient-to-position) !important; --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to) !important; }
+  .dark .to-white { --tw-gradient-to: #1c2230 var(--tw-gradient-to-position) !important; }
+
+  /* ==== Text colors ==== */
   .dark .text-ink-900 { color: #eceef2 !important; }
   .dark .text-ink-800 { color: #d5dae3 !important; }
   .dark .text-ink-700 { color: #b0b9c9 !important; }
@@ -27,9 +42,18 @@
   .dark .text-ink-500 { color: #8492a9 !important; }
   .dark .text-ink-400 { color: #64738d !important; }
 
+  /* ==== Borders ==== */
   .dark .border-ink-100 { border-color: #384050 !important; }
   .dark .border-ink-200 { border-color: #414b5e !important; }
+  .dark .border-ink-300 { border-color: #4f5c74 !important; }
+  .dark .border-white\/20 { border-color: rgba(255, 255, 255, 0.1) !important; }
+  .dark .border-white\/10 { border-color: rgba(255, 255, 255, 0.06) !important; }
+  .dark .divide-ink-100 > * + * { border-color: #384050 !important; }
+  .dark .divide-ink-200 > * + * { border-color: #414b5e !important; }
+  .dark .ring-ink-100 { --tw-ring-color: #384050 !important; }
+  .dark .ring-ink-200 { --tw-ring-color: #414b5e !important; }
 
+  /* ==== Form inputs ==== */
   .dark input,
   .dark textarea,
   .dark select {
@@ -37,13 +61,14 @@
     border-color: #384050 !important;
     color: #eceef2 !important;
   }
-
   .dark input::placeholder,
   .dark textarea::placeholder {
     color: #64738d !important;
   }
 
-  .dark .bg-ink-50\/30 { background-color: rgba(37, 99, 235, 0.08) !important; }
+  /* ==== Hover states ==== */
+  .dark .hover\:bg-ink-50:hover { background-color: rgba(255, 255, 255, 0.04) !important; }
+  .dark .hover\:bg-ink-100:hover { background-color: rgba(255, 255, 255, 0.06) !important; }
 }
 
 @layer components {
@@ -67,10 +92,8 @@
   }
 }
 
-/* Smooth scroll */
 html { scroll-behavior: smooth; }
 
-/* Better scrollbar in dark mode */
 .dark ::-webkit-scrollbar { width: 10px; height: 10px; }
 .dark ::-webkit-scrollbar-track { background: #1c2230; }
 .dark ::-webkit-scrollbar-thumb { background: #414b5e; border-radius: 5px; }

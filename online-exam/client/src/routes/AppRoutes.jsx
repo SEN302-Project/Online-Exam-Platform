@@ -22,6 +22,7 @@ import LiveExam from "../pages/student/LiveExam";
 import HonorPolicy from "../pages/student/HonorPolicy";
 import HelpCenter from "../pages/student/HelpCenter";
 import PracticeMode from "../pages/student/PracticeMode";
+import IntegrityStatus from "../pages/student/IntegrityStatus";
 
 // Instructor
 import InstructorDashboard from "../pages/instructor/InstructorDashboard";
@@ -31,15 +32,20 @@ import GradingInterface from "../pages/instructor/GradingInterface";
 import PlagiarismReport from "../pages/instructor/PlagiarismReport";
 import Analytics from "../pages/instructor/Analytics";
 import InstructorHelp from "../pages/instructor/InstructorHelp";
+import Drafts from "../pages/instructor/Drafts";
 
 // Proctor
 import ProctorConsole from "../pages/proctor/ProctorConsole";
 import IncidentReview from "../pages/proctor/IncidentReview";
+import Incidents from "../pages/proctor/Incidents";
+import PastSessions from "../pages/proctor/PastSessions";
+import ProctorHelp from "../pages/proctor/ProctorHelp";
 
 // Admin
 import AdminPanel from "../pages/admin/AdminPanel";
 import UserManagement from "../pages/admin/UserManagement";
 import AuditLogs from "../pages/admin/AuditLogs";
+import AdminSupport from "../pages/admin/AdminSupport";
 
 function ProtectedRoute({ children, allowedRoles }) {
   const { user, loading } = useAuth();
@@ -81,6 +87,7 @@ export default function AppRoutes() {
       <Route path="/student/live" element={<ProtectedRoute allowedRoles={[ROLES.STUDENT]}><LiveExam /></ProtectedRoute>} />
       <Route path="/student/honor-policy" element={<ProtectedRoute allowedRoles={[ROLES.STUDENT]}><HonorPolicy /></ProtectedRoute>} />
       <Route path="/student/help" element={<ProtectedRoute allowedRoles={[ROLES.STUDENT]}><HelpCenter /></ProtectedRoute>} />
+      <Route path="/student/integrity" element={<ProtectedRoute allowedRoles={[ROLES.STUDENT]}><IntegrityStatus /></ProtectedRoute>} />
       <Route path="/student/exam/:examId" element={<ProtectedRoute allowedRoles={[ROLES.STUDENT]}><ExamRoom /></ProtectedRoute>} />
       <Route path="/student/results/:resultId" element={<ProtectedRoute allowedRoles={[ROLES.STUDENT]}><Results /></ProtectedRoute>} />
       <Route path="/student/history" element={<ProtectedRoute allowedRoles={[ROLES.STUDENT]}><ExamHistory /></ProtectedRoute>} />
@@ -93,15 +100,20 @@ export default function AppRoutes() {
       <Route path="/instructor/plagiarism/:examId" element={<ProtectedRoute allowedRoles={[ROLES.INSTRUCTOR]}><PlagiarismReport /></ProtectedRoute>} />
       <Route path="/instructor/analytics" element={<ProtectedRoute allowedRoles={[ROLES.INSTRUCTOR]}><Analytics /></ProtectedRoute>} />
       <Route path="/instructor/help" element={<ProtectedRoute allowedRoles={[ROLES.INSTRUCTOR]}><InstructorHelp /></ProtectedRoute>} />
+      <Route path="/instructor/drafts" element={<ProtectedRoute allowedRoles={[ROLES.INSTRUCTOR]}><Drafts /></ProtectedRoute>} />
 
       {/* Proctor */}
       <Route path="/proctor" element={<ProtectedRoute allowedRoles={[ROLES.PROCTOR]}><ProctorConsole /></ProtectedRoute>} />
+      <Route path="/proctor/incidents" element={<ProtectedRoute allowedRoles={[ROLES.PROCTOR]}><Incidents /></ProtectedRoute>} />
+      <Route path="/proctor/sessions" element={<ProtectedRoute allowedRoles={[ROLES.PROCTOR]}><PastSessions /></ProtectedRoute>} />
+      <Route path="/proctor/help" element={<ProtectedRoute allowedRoles={[ROLES.PROCTOR]}><ProctorHelp /></ProtectedRoute>} />
       <Route path="/proctor/incident/:id" element={<ProtectedRoute allowedRoles={[ROLES.PROCTOR]}><IncidentReview /></ProtectedRoute>} />
 
       {/* Admin */}
       <Route path="/admin" element={<ProtectedRoute allowedRoles={[ROLES.SYSTEM_ADMIN, ROLES.INSTITUTION_ADMIN]}><AdminPanel /></ProtectedRoute>} />
       <Route path="/admin/users" element={<ProtectedRoute allowedRoles={[ROLES.SYSTEM_ADMIN, ROLES.INSTITUTION_ADMIN]}><UserManagement /></ProtectedRoute>} />
       <Route path="/admin/audit-logs" element={<ProtectedRoute allowedRoles={[ROLES.SYSTEM_ADMIN]}><AuditLogs /></ProtectedRoute>} />
+      <Route path="/admin/support" element={<ProtectedRoute allowedRoles={[ROLES.SYSTEM_ADMIN, ROLES.INSTITUTION_ADMIN]}><AdminSupport /></ProtectedRoute>} />
 
       <Route path="/" element={<HomeRedirect />} />
       <Route path="*" element={<HomeRedirect />} />

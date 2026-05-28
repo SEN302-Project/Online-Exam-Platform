@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import {
   Home, CalendarClock, ScanFace, MonitorCheck, Radio, TrendingUp, BookOpen, HelpCircle, Sparkles,
-  ArrowRight, Clock, FileText, Award, ChevronRight,
+  ShieldCheck, ArrowRight, Clock, FileText, Award, ChevronRight,
 } from "lucide-react";
 import Navbar from "../../components/common/Navbar";
 import Sidebar from "../../components/common/Sidebar";
@@ -22,6 +22,7 @@ const sidebarItems = [
       { to: "/student/system-check", label: "System check", icon: MonitorCheck },
       { to: "/student/live", label: "Live exam", icon: Radio },
       { to: "/student/history", label: "Results & feedback", icon: TrendingUp },
+      { to: "/student/integrity", label: "Integrity status", icon: ShieldCheck },
     ],
   },
   {

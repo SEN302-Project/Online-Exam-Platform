@@ -2,6 +2,7 @@ import { useState } from "react";
 import {
   LayoutDashboard, Plus, BookOpen, ScrollText, BarChart3, AlertTriangle, HelpCircle,
   Search, ChevronDown, MessageSquare, Mail, Phone, FileText, ShieldCheck, Users, Settings,
+  FileEdit,
 } from "lucide-react";
 import Navbar from "../../components/common/Navbar";
 import Sidebar from "../../components/common/Sidebar";
@@ -12,6 +13,7 @@ const sidebarItems = [
     items: [
       { to: "/instructor", label: "Overview", icon: LayoutDashboard, end: true },
       { to: "/instructor/create-exam", label: "Create exam", icon: Plus },
+      { to: "/instructor/drafts", label: "Drafts", icon: FileEdit, badge: "3" },
       { to: "/instructor/question-bank", label: "Question bank", icon: BookOpen },
       { to: "/instructor/grading/1", label: "Grading queue", icon: ScrollText, badge: "12" },
     ],
