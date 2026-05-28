@@ -2,6 +2,7 @@ import { createResults,
     findResultsByStudent, findResultById, findResultsByExam,
     updateResultById
  } from "../models/resultModel.js"
+import { generateResultPDF } from '../utils/generatePDF.js'
 
 export const getMyResults = async(req, res) => {
     try{
@@ -52,5 +53,18 @@ export const gradeResult = async(req,res) => {
     }
     catch (err) {
         res.status(500).json({message:"Internal Server Error"})
+    }
+}
+
+export const exportResultPDF = async (req, res) => {
+    try {
+        const { id } = req.params
+        const result = await findResultById(id)
+        if (!result) {
+            return res.status(404).json({ message: 'Result not found' })
+        }
+        generateResultPDF(result, res)
+    } catch (err) {
+        return res.status(500).json({ message: 'Internal Server Error' })
     }
 }

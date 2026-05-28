@@ -1,6 +1,10 @@
 import bcrypt from 'bcrypt'
-import { findUserByEmail, createUsers  } from '../models/userModel.js'
+import crypto from 'crypto'
+import { findUserByEmail, createUsers, updateUserByEmail
+    ,findUserByVerificationToken
+ } from '../models/userModel.js'
 import jwt from 'jsonwebtoken'
+import { sendVerificationEmail } from '../utils/sendEmail.js'
 
 
 export const registerUser = async (req, res) => {
@@ -26,6 +30,9 @@ export const registerUser = async (req, res) => {
     }
 
     await createUsers(user)
+    const verificationToken = crypto.randomBytes(32).toString('hex')
+    await updateUserByEmail(email, {verificationToken, verified:false})
+    await sendVerificationEmail(email, verificationToken)
     return res.status(201).json({message: "User successfully created."})
 
 }
@@ -53,10 +60,28 @@ export const loginUser =  async (req, res) => {
 
 }
 
-export const verifyEmail = (req, res) => {
-    res.json({message: "route name works"})
+export const verifyEmail = async(req, res) => {
+    try{
+        const token = req.query.token
+        const verifyUser = await findUserByVerificationToken(token)
+        if(!verifyUser) {
+            return res.status(404).json({message: 'User not found'})
+        }
+        else {
+            await updateUserByEmail(verifyUser.email, {verified:true, verificationToken:null})
+            return res.status(200).json({message: 'User verified Successfully'})
+        }
+    } catch (err) {
+        return res.status(500).json({message: 'Internal Server Error'})
+    }
 }
 
-export const getMe = (req, res) => {
-    return res.status(200).json(req.user)
+export const getMe = async(req, res) => {
+    try {
+        const user = await findUserByEmail(req.user.email)
+        const { password, verificationToken, ...safeUser } = user
+        return res.status(200).json(safeUser)
+    } catch(err) {
+        return res.status(500).json({message: 'Internal Server Error'})
+    }
 }

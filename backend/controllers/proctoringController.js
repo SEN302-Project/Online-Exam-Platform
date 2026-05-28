@@ -5,7 +5,8 @@ import {
 
 export const verifyIdentity = async (req, res) => {
     return res.json({
-        verified: true
+        verified: true,
+        imageUrl: req.file ? req.file.path : null
     })
 }
 
@@ -34,11 +35,12 @@ export const uploadFrame = async(req, res) => {
         const frame = {
             examId:examId,
             studentId:studentId,
+            frameUrl: req.file ? req.file.path : null,
             capturedAt: new Date()
         }
 
         await createFrame(frame)
-        return res.status(201).json({message: 'Frame Created'})
+        return res.status(201).json({message: 'Frame uploaded'})
 
     }catch(err) {
         return res.status(500).json({message: 'Internal Server Error'})

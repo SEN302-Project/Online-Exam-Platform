@@ -27,3 +27,4 @@ export const deleteExamById = async(id) => {
     const result = await getExams().deleteOne({_id: new ObjectId(id)})
     return result
 }
+
