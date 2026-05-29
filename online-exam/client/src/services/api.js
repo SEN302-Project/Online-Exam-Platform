@@ -24,4 +24,3 @@ api.interceptors.response.use(
 );
 
 export default api;
-https://online-exam-platform-1-gdhb.onrender.com 

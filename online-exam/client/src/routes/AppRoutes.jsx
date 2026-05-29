@@ -8,7 +8,7 @@ import Register from "../pages/auth/Register";
 import VerifyEmail from "../pages/auth/VerifyEmail";
 
 // Shared
-import Profile from "../pages/Profile";
+import Profile from "../pages/profile";
 
 // Student
 import StudentDashboard from "../pages/student/StudentDashboard";
