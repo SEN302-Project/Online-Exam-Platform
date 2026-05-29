@@ -1,13 +1,12 @@
 export const ROLES = {
-  SYSTEM_ADMIN: "system_admin",
-  INSTITUTION_ADMIN: "institution_admin",
+  ADMIN: "admin",
   INSTRUCTOR: "instructor",
   PROCTOR: "proctor",
   STUDENT: "student",
 };
 
 export const ROLE_HOMES = {
-  [ROLES.SYSTEM_ADMIN]: "/admin",
+  [ROLES.ADMIN]: "/admin",
   [ROLES.INSTRUCTOR]: "/instructor",
   [ROLES.PROCTOR]: "/proctor",
   [ROLES.STUDENT]: "/student",
@@ -22,8 +21,7 @@ export function hasRole(user, allowedRoles) {
 export function roleLabel(role) {
   return (
     {
-      [ROLES.SYSTEM_ADMIN]: "System Administrator",
-      [ROLES.INSTITUTION_ADMIN]: "Institution Administrator",
+      [ROLES.ADMIN]: "Administrator",
       [ROLES.INSTRUCTOR]: "Instructor",
       [ROLES.PROCTOR]: "Proctor",
       [ROLES.STUDENT]: "Student",
