@@ -110,10 +110,10 @@ export default function AppRoutes() {
       <Route path="/proctor/incident/:id" element={<ProtectedRoute allowedRoles={[ROLES.PROCTOR]}><IncidentReview /></ProtectedRoute>} />
 
       {/* Admin */}
-      <Route path="/admin" element={<ProtectedRoute allowedRoles={[ROLES.SYSTEM_ADMIN, ROLES.INSTITUTION_ADMIN]}><AdminPanel /></ProtectedRoute>} />
-      <Route path="/admin/users" element={<ProtectedRoute allowedRoles={[ROLES.SYSTEM_ADMIN, ROLES.INSTITUTION_ADMIN]}><UserManagement /></ProtectedRoute>} />
-      <Route path="/admin/audit-logs" element={<ProtectedRoute allowedRoles={[ROLES.SYSTEM_ADMIN]}><AuditLogs /></ProtectedRoute>} />
-      <Route path="/admin/support" element={<ProtectedRoute allowedRoles={[ROLES.SYSTEM_ADMIN, ROLES.INSTITUTION_ADMIN]}><AdminSupport /></ProtectedRoute>} />
+      <Route path="/admin" element={<ProtectedRoute allowedRoles={[ROLES.ADMIN]}><AdminPanel /></ProtectedRoute>} />
+      <Route path="/admin/users" element={<ProtectedRoute allowedRoles={[ROLES.ADMIN]}><UserManagement /></ProtectedRoute>} />
+      <Route path="/admin/audit-logs" element={<ProtectedRoute allowedRoles={[ROLES.ADMIN]}><AuditLogs /></ProtectedRoute>} />
+      <Route path="/admin/support" element={<ProtectedRoute allowedRoles={[ROLES.ADMIN]}><AdminSupport /></ProtectedRoute>} />
 
       <Route path="/" element={<HomeRedirect />} />
       <Route path="*" element={<HomeRedirect />} />
