@@ -8,7 +8,6 @@ export const ROLES = {
 
 export const ROLE_HOMES = {
   [ROLES.SYSTEM_ADMIN]: "/admin",
-  [ROLES.INSTITUTION_ADMIN]: "/admin",
   [ROLES.INSTRUCTOR]: "/instructor",
   [ROLES.PROCTOR]: "/proctor",
   [ROLES.STUDENT]: "/student",
