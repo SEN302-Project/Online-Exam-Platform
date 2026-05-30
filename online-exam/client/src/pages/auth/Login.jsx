@@ -27,10 +27,9 @@ export default function Login() {
   };
 
   return (
-    <div className="min-h-screen grid lg:grid-cols-2">
-      {/* Left: brand panel */}
+    <div className="min-h-screen grid lg:grid-cols-2 bg-ink-50">
+      {/* Left brand panel - hidden on mobile */}
       <div className="hidden lg:flex relative flex-col justify-between p-12 bg-ink-950 text-white overflow-hidden">
-        {/* Subtle grid background */}
         <div
           className="absolute inset-0 opacity-[0.04]"
           style={{
@@ -38,10 +37,7 @@ export default function Login() {
             backgroundSize: "32px 32px",
           }}
         />
-        <div
-          className="absolute -top-32 -right-32 h-96 w-96 rounded-full bg-accent-600/30 blur-3xl"
-          aria-hidden
-        />
+        <div className="absolute -top-32 -right-32 h-96 w-96 rounded-full bg-accent-600/30 blur-3xl" aria-hidden />
 
         <div className="relative">
           <div className="flex items-center gap-2.5">
@@ -78,25 +74,24 @@ export default function Login() {
           </div>
         </div>
 
-        <div className="relative text-xs text-ink-500">
-          © 2026 Proctera. Built for academic integrity.
-        </div>
+        <div className="relative text-xs text-ink-500">© 2026 Proctera. Built for academic integrity.</div>
       </div>
 
-      {/* Right: form */}
-      <div className="flex items-center justify-center p-8">
+      {/* Right form - full width on mobile */}
+      <div className="flex items-center justify-center px-4 sm:px-8 py-8 sm:py-12 min-h-screen lg:min-h-0">
         <div className="w-full max-w-sm">
-          <div className="lg:hidden flex items-center gap-2 mb-8">
+          {/* Mobile logo */}
+          <Link to="/" className="lg:hidden flex items-center gap-2 mb-8">
             <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-ink-900 text-white">
               <GraduationCap size={20} />
             </div>
-            <span className="font-display text-lg font-bold">Proctera</span>
-          </div>
+            <span className="font-display text-lg font-bold text-ink-900">Proctera</span>
+          </Link>
 
-          <h2 className="font-display text-3xl font-semibold text-ink-900">Welcome back</h2>
-          <p className="mt-1.5 text-ink-500">Sign in to access your dashboard.</p>
+          <h2 className="font-display text-2xl sm:text-3xl font-semibold text-ink-900">Welcome back</h2>
+          <p className="mt-1.5 text-ink-500 text-sm sm:text-base">Sign in to access your dashboard.</p>
 
-          <form onSubmit={handleSubmit} className="mt-8 space-y-4">
+          <form onSubmit={handleSubmit} className="mt-6 sm:mt-8 space-y-4">
             {error && (
               <div className="rounded-lg border border-danger/30 bg-danger/5 px-4 py-2.5 text-sm text-danger">
                 {error}
@@ -149,20 +144,6 @@ export default function Login() {
               {loading ? "Signing in…" : "Sign In"}
             </button>
           </form>
-
-          <div className="relative my-6">
-            <div className="absolute inset-0 flex items-center">
-              <div className="w-full border-t border-ink-100" />
-            </div>
-            <div className="relative flex justify-center text-xs uppercase tracking-wider">
-              <span className="bg-ink-50 px-3 text-ink-400">or continue with</span>
-            </div>
-          </div>
-
-          <div className="grid grid-cols-2 gap-2">
-            <button className="btn-secondary !text-sm">Google SSO</button>
-            <button className="btn-secondary !text-sm">Microsoft</button>
-          </div>
 
           <p className="mt-8 text-center text-sm text-ink-500">
             New here?{" "}

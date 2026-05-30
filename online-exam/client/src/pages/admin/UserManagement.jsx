@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Plus, Search, MoreVertical, LayoutDashboard, Users, ScrollText, ArrowLeft , HelpCircle} from "lucide-react";
+import { Plus, Search, MoreVertical, LayoutDashboard, Users, ScrollText, ArrowLeft , HelpCircle, X} from "lucide-react";
 import Navbar from "../../components/common/Navbar";
 import Sidebar from "../../components/common/Sidebar";
 import { roleLabel } from "../../utils/roleGuard";
@@ -32,6 +32,15 @@ export default function UserManagement() {
   const navigate = useNavigate();
   const [menuOpen, setMenuOpen] = useState(false);
   const [search, setSearch] = useState("");
+  const [showInvite, setShowInvite] = useState(false);
+  const [inviteData, setInviteData] = useState({ name: "", email: "", role: "student", institution: "" });
+
+  const handleInvite = (e) => {
+    e.preventDefault();
+    // TODO: wire to backend POST /api/admin/users or similar
+    setShowInvite(false);
+    setInviteData({ name: "", email: "", role: "student", institution: "" });
+  };
 
   const filtered = mockUsers.filter(
     (u) => u.name.toLowerCase().includes(search.toLowerCase()) || u.email.toLowerCase().includes(search.toLowerCase())
@@ -56,7 +65,7 @@ export default function UserManagement() {
               <h1 className="font-display text-2xl sm:text-4xl font-semibold text-ink-900">User Management</h1>
               <p className="mt-1.5 text-ink-500 text-sm sm:text-base">Manage accounts, roles, and access permissions.</p>
             </div>
-            <button className="btn-primary">
+            <button onClick={() => setShowInvite(true)} className="btn-primary">
               <Plus size={15} /> Invite user
             </button>
           </div>
@@ -153,6 +162,80 @@ export default function UserManagement() {
           </div>
         </main>
       </div>
+
+      {/* Invite User Modal */}
+      {showInvite && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 animate-fade-in">
+          <div className="absolute inset-0 bg-ink-950/60 backdrop-blur-sm" onClick={() => setShowInvite(false)} />
+          <div className="relative w-full max-w-md card animate-slide-up">
+            <div className="px-6 py-4 border-b border-ink-100 flex items-center justify-between">
+              <h3 className="font-display text-lg font-semibold text-ink-900">Invite User</h3>
+              <button onClick={() => setShowInvite(false)} className="btn-ghost !p-1.5">
+                <X size={18} />
+              </button>
+            </div>
+            <form onSubmit={handleInvite} className="p-6 space-y-4">
+              <div>
+                <label className="text-sm font-medium text-ink-700 block mb-1.5">Full name</label>
+                <input
+                  type="text"
+                  required
+                  value={inviteData.name}
+                  onChange={(e) => setInviteData({ ...inviteData, name: e.target.value })}
+                  className="input"
+                  placeholder="Jane Doe"
+                />
+              </div>
+              <div>
+                <label className="text-sm font-medium text-ink-700 block mb-1.5">Email</label>
+                <input
+                  type="email"
+                  required
+                  value={inviteData.email}
+                  onChange={(e) => setInviteData({ ...inviteData, email: e.target.value })}
+                  className="input"
+                  placeholder="user@university.edu"
+                />
+              </div>
+              <div>
+                <label className="text-sm font-medium text-ink-700 block mb-1.5">Institution</label>
+                <input
+                  type="text"
+                  required
+                  value={inviteData.institution}
+                  onChange={(e) => setInviteData({ ...inviteData, institution: e.target.value })}
+                  className="input"
+                  placeholder="University Name"
+                />
+              </div>
+              <div>
+                <label className="text-sm font-medium text-ink-700 block mb-1.5">Role</label>
+                <select
+                  value={inviteData.role}
+                  onChange={(e) => setInviteData({ ...inviteData, role: e.target.value })}
+                  className="input"
+                >
+                  <option value="student">Student</option>
+                  <option value="instructor">Instructor</option>
+                  <option value="proctor">Proctor</option>
+                  <option value="admin">Administrator</option>
+                </select>
+              </div>
+              <p className="text-xs text-ink-500">
+                An invitation email will be sent to this address with instructions to set up their account.
+              </p>
+              <div className="flex justify-end gap-2 pt-4 border-t border-ink-100">
+                <button type="button" onClick={() => setShowInvite(false)} className="btn-secondary">
+                  Cancel
+                </button>
+                <button type="submit" className="btn-primary">
+                  Send Invitation
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

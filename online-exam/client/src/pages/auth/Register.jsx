@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { ArrowLeft, Check } from "lucide-react";
+import { ArrowLeft, Check, Eye, EyeOff, GraduationCap } from "lucide-react";
 import { useAuth } from "../../context/AuthContext";
 
 const ROLES = [
@@ -20,6 +20,8 @@ export default function Register() {
     role: "student",
     institution: "",
   });
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirm, setShowConfirm] = useState(false);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
 
@@ -29,28 +31,42 @@ export default function Register() {
     if (formData.password !== formData.confirmPassword) {
       return setError("Passwords do not match");
     }
+    if (formData.password.length < 8) {
+      return setError("Password must be at least 8 characters");
+    }
     setLoading(true);
     try {
       await register(formData);
       navigate("/verify-email", { state: { email: formData.email } });
     } catch (err) {
-      setError(err.response?.data?.message || "Registration failed. Please try again.");
+      // Show backend error message if available, otherwise generic
+      const msg =
+        err.response?.data?.message ||
+        err.response?.data?.errors?.[0]?.msg ||
+        "Registration failed. Please try again.";
+      setError(msg);
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div className="min-h-screen bg-ink-50 flex items-center justify-center p-6">
+    <div className="min-h-screen bg-ink-50 flex items-center justify-center p-4 sm:p-6">
       <div className="w-full max-w-md">
-        <Link to="/login" className="inline-flex items-center gap-1.5 text-sm text-ink-500 hover:text-ink-900 mb-8">
-          <ArrowLeft size={15} />
-          Back to sign in
+        <Link to="/" className="inline-flex items-center gap-2 mb-6">
+          <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-ink-900 text-white">
+            <GraduationCap size={20} />
+          </div>
+          <span className="font-display text-lg font-bold text-ink-900">Proctera</span>
         </Link>
 
-        <div className="card p-8">
+        <Link to="/login" className="inline-flex items-center gap-1.5 text-sm text-ink-500 hover:text-ink-900 mb-6">
+          <ArrowLeft size={15} /> Back to sign in
+        </Link>
+
+        <div className="card p-5 sm:p-8">
           {/* Steps indicator */}
-          <div className="flex items-center gap-2 mb-7">
+          <div className="flex items-center gap-2 mb-6 sm:mb-7">
             {[1, 2].map((s) => (
               <div key={s} className="flex-1 flex items-center gap-2">
                 <div
@@ -65,7 +81,7 @@ export default function Register() {
             ))}
           </div>
 
-          <h2 className="font-display text-2xl font-semibold text-ink-900">
+          <h2 className="font-display text-xl sm:text-2xl font-semibold text-ink-900">
             {step === 1 ? "Choose your role" : "Account details"}
           </h2>
           <p className="mt-1 text-sm text-ink-500">
@@ -117,9 +133,7 @@ export default function Register() {
               </div>
 
               <div>
-                <label className="text-sm font-medium text-ink-700 block mb-1.5">
-                  Institutional email
-                </label>
+                <label className="text-sm font-medium text-ink-700 block mb-1.5">Institutional email</label>
                 <input
                   type="email"
                   required
@@ -142,27 +156,46 @@ export default function Register() {
                 />
               </div>
 
-              <div className="grid grid-cols-2 gap-3">
-                <div>
-                  <label className="text-sm font-medium text-ink-700 block mb-1.5">Password</label>
+              <div>
+                <label className="text-sm font-medium text-ink-700 block mb-1.5">Password</label>
+                <div className="relative">
                   <input
-                    type="password"
+                    type={showPassword ? "text" : "password"}
                     required
                     minLength={8}
                     value={formData.password}
                     onChange={(e) => setFormData({ ...formData, password: e.target.value })}
-                    className="input"
+                    className="input pr-10"
+                    placeholder="Min 8 characters"
                   />
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword(!showPassword)}
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-ink-400 hover:text-ink-700"
+                  >
+                    {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
+                  </button>
                 </div>
-                <div>
-                  <label className="text-sm font-medium text-ink-700 block mb-1.5">Confirm</label>
+              </div>
+
+              <div>
+                <label className="text-sm font-medium text-ink-700 block mb-1.5">Confirm password</label>
+                <div className="relative">
                   <input
-                    type="password"
+                    type={showConfirm ? "text" : "password"}
                     required
                     value={formData.confirmPassword}
                     onChange={(e) => setFormData({ ...formData, confirmPassword: e.target.value })}
-                    className="input"
+                    className="input pr-10"
+                    placeholder="Re-enter password"
                   />
+                  <button
+                    type="button"
+                    onClick={() => setShowConfirm(!showConfirm)}
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-ink-400 hover:text-ink-700"
+                  >
+                    {showConfirm ? <EyeOff size={16} /> : <Eye size={16} />}
+                  </button>
                 </div>
               </div>
 
